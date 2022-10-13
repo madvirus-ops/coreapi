@@ -22,3 +22,19 @@ class User(BaseModel):
     middle_name:Optional[str]
     gender: Gender
     roles: Role
+
+class UserUpdate(BaseModel):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    middle_name:Optional[str]
+    roles:Optional[Role]
+
+class PostModel(BaseModel):
+    id: Optional[UUID] = uuid4()
+    title:str
+    slug:Optional[str]
+    body:str
+    # image:[str]
+    author:str
+
+
