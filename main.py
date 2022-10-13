@@ -103,7 +103,7 @@ async def create_post(post:PostModel):
 
 @app.get("/api/post/")
 async def get_post():
-    return pdb
+    return pdb 
 
 
 
