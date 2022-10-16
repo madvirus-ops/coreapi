@@ -1,5 +1,5 @@
 from uuid import UUID, uuid4
-from pydantic import BaseModel,create_model
+from pydantic import BaseModel
 from typing import List, Optional
 from enum import Enum
 
