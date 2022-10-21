@@ -1,10 +1,23 @@
-from http.client import HTTPException
+# from http.client import HTTPException
+from operator import add
+from pyexpat import model
 from typing import List
 from uuid import UUID, uuid4
-from fastapi import FastAPI
-from models import Gender, PostModel, User,Role, UserUpdate
+from fastapi import FastAPI, HTTPException
+from models import *
+from tortoise.contrib.fastapi import register_tortoise
 
 app = FastAPI()
+
+register_tortoise(
+    app,
+    db_url ="sqlite://database.sqlite3",
+    modules = {"models":["models"]},
+    generate_schemas=True,
+    add_exception_handlers=True,
+)
+
+
 db: List[User] = [
     User(
         id=uuid4(),
@@ -105,5 +118,8 @@ async def create_post(post:PostModel):
 async def get_post():
     return pdb 
 
-
+@app.post("/api/register")
+async def register_user(user: usermodel_pydanticIn):
+    user_info = user.dict(exclude_unset=True)
+    user_info["password"] = []
 
