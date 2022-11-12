@@ -43,6 +43,13 @@ class PostModel(BaseModel):
     author:str
 
 
+#crash course
+class Itemss(BaseModel):
+    name: str
+    price: int
+    description: Optional[str]
+
+
 
 class UserModel(Model):
     id = fields.IntField(pk = True,index = True)

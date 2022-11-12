@@ -1,6 +1,5 @@
 # from http.client import HTTPException
-from operator import add
-from pyexpat import model
+
 from typing import List
 from uuid import UUID, uuid4
 from fastapi import FastAPI, HTTPException
@@ -65,7 +64,7 @@ pdb: List[PostModel] = [ PostModel(
 ) 
 ]
 
-
+#fastapi course from that java guy
 @app.get("/")
 async def root():
     return {"hello":"world"}
@@ -139,7 +138,7 @@ async def create_post(post:PostModel):
 @app.get("/api/post/")
 async def get_post():
     return pdb 
-
+# e commerce fastapi tut
 @app.post("/api/register")
 async def register_user(user: usermodel_pydanticIn):
     user_info = user.dict(exclude_unset=True)
@@ -151,3 +150,31 @@ async def register_user(user: usermodel_pydanticIn):
         "data":f"hello {new_user.username}, thanks for choosing shit"
     }
 
+
+
+#fastapi crash course
+#query parameters takes ?id=id
+@app.get("/post/")
+async def get_post_by_id(id:int | None =None):
+    if id and  id in pdb:
+        return pdb.__getitem__(id)
+    return pdb
+
+#url and path parameters 
+@app.get("/users/{user_id}/items/{items_id}")
+async def get_post_by_user_id(user_id:str, items_id:str,q:str | None = None ):
+    item = {"item_id":items_id,"user_id":user_id}
+    if q:
+        item = {"item_id":items_id,"user_id":user_id,"q":q}
+        return item
+    return item
+
+summary = "query parameters are passed in the function, while path parameters are passed in the path/urls"
+
+
+#request body
+@app.post("/item")
+def create_item(item,Itemss):
+    item_dict = item.dict()
+    return {"name":item_dict['name'],"price":item_dict['price'],"description":None}
+    
