@@ -5,9 +5,31 @@ from typing import List
 from uuid import UUID, uuid4
 from fastapi import FastAPI, HTTPException
 from models import *
+from authentication import *
 from tortoise.contrib.fastapi import register_tortoise
+from tortoise.signals import post_save
+from typing import List,Optional,Type
+from tortoise import BaseDBAsyncClient 
 
 app = FastAPI()
+
+@post_save(UserModel)
+async def create_business(
+    sender: "Type[UserModel]", 
+    instance: UserModel, 
+    created: bool, 
+    using_db: "Optional[BaseDBAsyncClient]", 
+    update_field: List[str]
+    ) -> None:
+
+    if created:
+        business_obj = await BusinessModel.create(
+            business_name = instance.username,owner = instance
+        )
+        await business_pydantic.from_tortoise_orm(business_obj)
+        #fuck 
+
+
 
 register_tortoise(
     app,
@@ -121,5 +143,11 @@ async def get_post():
 @app.post("/api/register")
 async def register_user(user: usermodel_pydanticIn):
     user_info = user.dict(exclude_unset=True)
-    user_info["password"] = []
+    user_info["password"] = get_hashed_password(user_info['password'])
+    user_obj = await UserModel.create(**user_info)
+    new_user = await usermodel_pydantic.from_tortoise_orm(user_obj)
+    return {
+        "status":"ok",
+        "data":f"hello {new_user.username}, thanks for choosing shit"
+    }
 
