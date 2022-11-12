@@ -46,8 +46,9 @@ class PostModel(BaseModel):
 #crash course
 class Itemss(BaseModel):
     name: str
-    price: int
+    price: float
     description: Optional[str]
+    tax:Optional[float]
 
 
 

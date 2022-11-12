@@ -173,8 +173,20 @@ summary = "query parameters are passed in the function, while path parameters ar
 
 
 #request body
-@app.post("/item")
-def create_item(item,Itemss):
+@app.post("/items")
+def create_item(item: Itemss):
     item_dict = item.dict()
-    return {"name":item_dict['name'],"price":item_dict['price'],"description":None}
-    
+    if item.tax:
+        price_tax = item.price + item.tax
+        item_dict.update({"price_tax":price_tax})
+
+    return item_dict
+
+@app.put("/items/{id}")
+async def create_put(id:int,item:Itemss):
+    return {"item_id":id,**Itemss.dict()}
+
+
+# @app.get("/item")
+# async def search_item(id:str | None=None ):
+#     return {"true":id}
