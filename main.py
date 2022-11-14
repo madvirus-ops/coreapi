@@ -2,7 +2,7 @@
 
 from typing import List
 from uuid import UUID, uuid4
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query, Path,Cookie
 from models import *
 from authentication import *
 from tortoise.contrib.fastapi import register_tortoise
@@ -190,3 +190,30 @@ async def create_put(id:int,item:Itemss):
 # @app.get("/item")
 # async def search_item(id:str | None=None ):
 #     return {"true":id}
+# def TrainModel():
+#     list_update = {
+
+#     }
+#     for x in range(10):
+#         list_update[x] = x
+
+
+
+@app.get("/item",description="this endponit fuck you up.. ")
+async def reset_items(q: str | None = Query(None)):
+    results = {"item":q}
+    return results
+
+@app.get("/item_val/{id}",description="this also")
+async def validate_item(id:int,q:str | None=Query(None)):
+    results = {"item_id":id}
+    if q:
+        results.update({"q":q})         
+    return results
+
+
+
+#cookie
+@app.get("/cookie")
+async def get_cookie(cookie_id:str | None=Cookie(None)):
+    return {"cookie_id":cookie_id}
