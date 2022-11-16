@@ -54,7 +54,7 @@ class Itemss(BaseModel):
 
 class UserModel(Model):
     id = fields.IntField(pk = True,index = True)
-    username = fields.CharField(max_length=25, null = False,unique= True),
+    username = fields.CharField(max_length=25, null = False,unique= True)
     email = fields.CharField(max_length=255,unique=True)
     password = fields.CharField(max_length=100,null= False)
     is_verified = fields.BooleanField(default=False)
@@ -83,7 +83,7 @@ class ProductModel(Model):
 
 
 usermodel_pydantic = pydantic_model_creator(UserModel,name="UserModel",exclude=("is_verified",))
-usermodel_pydanticIn = pydantic_model_creator(UserModel,name="UserModelIn",exclude_readonly=True,exclude=("is_verified","joined_date"))
+usermodel_pydanticIn = pydantic_model_creator(UserModel,name="UserModelIn",exclude=("is_verified","joined_date","id"))
 usermodel_pydanticOut = pydantic_model_creator(UserModel,name="UserModelOut",exclude=("password",))
 
 business_pydantic = pydantic_model_creator(BusinessModel,name="BusinessModel")

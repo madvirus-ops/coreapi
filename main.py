@@ -23,7 +23,8 @@ async def create_business(
 
     if created:
         business_obj = await BusinessModel.create(
-            business_name = instance.username,owner = instance
+            business_name = instance.username,owner = instance,
+            description = instance.email
         )
         await business_pydantic.from_tortoise_orm(business_obj)
         #fuck 
@@ -32,7 +33,7 @@ async def create_business(
 
 register_tortoise(
     app,
-    db_url ="sqlite://database.sqlite3",
+    db_url ="sqlite://db.sqlite3",
     modules = {"models":["models"]},
     generate_schemas=True,
     add_exception_handlers=True,
@@ -138,6 +139,10 @@ async def create_post(post:PostModel):
 @app.get("/api/post/")
 async def get_post():
     return pdb 
+
+
+
+
 # e commerce fastapi tut
 @app.post("/api/register")
 async def register_user(user: usermodel_pydanticIn):
@@ -147,8 +152,11 @@ async def register_user(user: usermodel_pydanticIn):
     new_user = await usermodel_pydantic.from_tortoise_orm(user_obj)
     return {
         "status":"ok",
-        "data":f"hello {new_user.username}, thanks for choosing shit"
+        "data":f"hello {new_user.username}, thanks for choosing shit",
+        "user":user_info
     }
+
+
 
 
 
